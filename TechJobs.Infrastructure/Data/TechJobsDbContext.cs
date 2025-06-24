@@ -13,8 +13,8 @@ namespace TechJobs.Infrastructure.Data
       public DbSet<User> Users { get; set; }
       public DbSet<Gender> Genders { get; set; }
       public DbSet<Religion> Religions { get; set; }
-      //public DbSet<Nationality> Nationalities { get; set; }
-      //public DbSet<MaritalStatus> MaritalStatuses { get; set; }
+      public DbSet<Nationality> Nationalities { get; set; }
+      public DbSet<MaritalStatus> MaritalStatuses { get; set; }
       //public DbSet<Blog> Blogs { get; set; }
       //public DbSet<BlogVideo> BlogVideos { get; set; }
       //public DbSet<Review> Reviews { get; set; }
@@ -72,9 +72,38 @@ namespace TechJobs.Infrastructure.Data
                   .IsRequired()
                   .HasMaxLength(100);
          });
-#endregion
+         modelBuilder.Entity<Nationality>(entity =>
+         {
+            entity.HasKey(n => n.NationalityId);
+            entity.Property(n => n.NationalityName)
+                .IsRequired()
+                .HasMaxLength(50);
 
- #region SeedData
+            entity.HasData(
+                new Nationality { NationalityId = 1, NationalityName = "Bangladeshi" },
+                new Nationality { NationalityId = 2, NationalityName = "Indian" },
+                new Nationality { NationalityId = 3, NationalityName = "Pakistani" },
+                new Nationality { NationalityId = 4, NationalityName = "Nepali" },
+                new Nationality { NationalityId = 5, NationalityName = "Other" }
+            );
+         });
+         modelBuilder.Entity<MaritalStatus>(entity =>
+         {
+            entity.HasKey(m => m.MaritalStatusId);
+            entity.Property(m => m.MaritalStatusName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            entity.HasData(
+                new MaritalStatus { MaritalStatusId = 1, MaritalStatusName = "Single" },
+                new MaritalStatus { MaritalStatusId = 2, MaritalStatusName = "Married" },
+                new MaritalStatus { MaritalStatusId = 3, MaritalStatusName = "Divorced" },
+                new MaritalStatus { MaritalStatusId = 4, MaritalStatusName = "Widowed" }
+            );
+         });
+         #endregion
+
+         #region SeedData
          modelBuilder.Entity<Role>().HasData(
              new Role { RoleId = 1, RoleName = "JobSeeker" },
              new Role { RoleId = 2, RoleName = "Employer" },
