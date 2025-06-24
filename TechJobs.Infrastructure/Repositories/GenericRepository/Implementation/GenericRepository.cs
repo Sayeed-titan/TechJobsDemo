@@ -40,7 +40,6 @@ namespace TechJobs.Infrastructure.Repositories.GenericRepository.Implementation
             _dbSet.RemoveRange(entities);
         }
 
-
         public async Task<bool> ExistsAsync(Expression<Func<T, bool>> filter)
         {
             return await _dbSet.AnyAsync(filter);
@@ -52,8 +51,7 @@ namespace TechJobs.Infrastructure.Repositories.GenericRepository.Implementation
 
             if (filter != null)
             {
-                query = query.Where(filter);
-              
+                query = query.Where(filter);              
             }
             if (!string.IsNullOrWhiteSpace(includeProperties))
             {

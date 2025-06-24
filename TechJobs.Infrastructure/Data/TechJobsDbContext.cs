@@ -11,8 +11,8 @@ namespace TechJobs.Infrastructure.Data
 
       public DbSet<Role> Roles { get; set; }
       public DbSet<User> Users { get; set; }
-      //public DbSet<Gender> Genders { get; set; }
-      //public DbSet<Religion> Religions { get; set; }
+      public DbSet<Gender> Genders { get; set; }
+      public DbSet<Religion> Religions { get; set; }
       //public DbSet<Nationality> Nationalities { get; set; }
       //public DbSet<MaritalStatus> MaritalStatuses { get; set; }
       //public DbSet<Blog> Blogs { get; set; }
@@ -20,10 +20,9 @@ namespace TechJobs.Infrastructure.Data
       //public DbSet<Review> Reviews { get; set; }
       //public DbSet<Course> Courses { get; set; }
 
-
       protected override void OnModelCreating(ModelBuilder modelBuilder)
       {
-         // Role entity configuration
+#region EntityConfiguration
          modelBuilder.Entity<Role>(entity =>
          {
             entity.HasKey(r => r.RoleId);
@@ -31,8 +30,6 @@ namespace TechJobs.Infrastructure.Data
                      .IsRequired()
                      .HasMaxLength(50);
          });
-
-         // User entity configuration
          modelBuilder.Entity<User>(entity =>
          {
             entity.HasKey(u => u.UserId);
@@ -61,15 +58,28 @@ namespace TechJobs.Infrastructure.Data
 
             entity.Property(u => u.CreatedAt).IsRequired();
          });
+         modelBuilder.Entity<Gender>(entity =>
+         {
+            entity.HasKey(g => g.GenderId);
+            entity.Property(g => g.GenderName)
+                  .IsRequired()
+                  .HasMaxLength(50);
+         });
+         modelBuilder.Entity<Religion>(entity =>
+         {
+            entity.HasKey(r => r.ReligionId);
+            entity.Property(r => r.ReligionName)
+                  .IsRequired()
+                  .HasMaxLength(100);
+         });
+#endregion
 
-         // Seed data for Roles
+ #region SeedData
          modelBuilder.Entity<Role>().HasData(
              new Role { RoleId = 1, RoleName = "JobSeeker" },
              new Role { RoleId = 2, RoleName = "Employer" },
              new Role { RoleId = 3, RoleName = "Admin" }
          );
-
-         // Seed data for Users (password hashes here are fake, replace with real hashes)
          modelBuilder.Entity<User>().HasData(
              // 1 Admin
              new User
@@ -124,7 +134,23 @@ namespace TechJobs.Infrastructure.Data
                 RoleId = 2,
                 CreatedAt = DateTime.UtcNow
              }
+);
+         modelBuilder.Entity<Gender>().HasData(
+             new Gender { GenderId = 1, GenderName = "Male" },
+             new Gender { GenderId = 2, GenderName = "Female" },
+             new Gender { GenderId = 3, GenderName = "Other" }
          );
+         modelBuilder.Entity<Religion>().HasData(
+             new Religion { ReligionId = 1, ReligionName = "Islam" },
+             new Religion { ReligionId = 2, ReligionName = "Christianity" },
+             new Religion { ReligionId = 3, ReligionName = "Hinduism" },
+             new Religion { ReligionId = 4, ReligionName = "Buddhism" },
+             new Religion { ReligionId = 5, ReligionName = "Other" }
+         );
+
+
+ #endregion
+
       }
    }
 

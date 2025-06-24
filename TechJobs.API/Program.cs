@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TechJobs.Infrastructure.Data;
+using TechJobs.Infrastructure.Repositories.GenericRepository.Implementation;
+using TechJobs.Infrastructure.Repositories.GenericRepository.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<TechJobsDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TechJobsCS")));
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 builder.Services.AddControllers();
 
